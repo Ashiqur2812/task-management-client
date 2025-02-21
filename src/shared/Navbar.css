@@ -1,0 +1,46 @@
+/* Keyframes for logo rotation */
+@keyframes rotate360 {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Apply rotation on hover */
+.hover\:rotate-360:hover {
+    animation: rotate360 1s linear;
+}
+
+/* Nav link animations */
+.nav-link {
+    position: relative;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #4a5568;
+    /* Gray color */
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Button animations */
+.group:hover .group-hover\:w-56 {
+    width: 14rem;
+}
+
+.group:hover .group-hover\:h-56 {
+    height: 14rem;
+}
