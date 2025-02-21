@@ -165,7 +165,7 @@ const Login = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: 0.6 }}
                         >
-                            <label htmlFor="email" className="block mb-2 text-sm">
+                            <label className="block mb-2 text-sm text-white">
                                 Email address
                             </label>
                             <input
@@ -183,7 +183,7 @@ const Login = () => {
                             transition={{ duration: 0.5, delay: 0.8 }}
                         >
                             <div className="flex justify-between">
-                                <label htmlFor="password" className="text-sm mb-2">
+                                <label className="text-sm mb-2 text-white">
                                     Password
                                 </label>
                             </div>
@@ -217,18 +217,6 @@ const Login = () => {
                     </motion.div>
                 </form>
 
-                {/* Forgot Password */}
-                <motion.div
-                    className="space-y-1"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1.2 }}
-                >
-                    <button className="text-xs hover:underline hover:text-teal-500 text-gray-800">
-                        Forgot password?
-                    </button>
-                </motion.div>
-
                 {/* Social Login Divider */}
                 <motion.div
                     className="flex items-center pt-4 space-x-1"
@@ -236,26 +224,26 @@ const Login = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.4 }}
                 >
-                    <div className="flex-1 h-px sm:w-16 bg-gray-600"></div>
-                    <p className="px-3 text-sm text-gray-800">Login with social accounts</p>
-                    <div className="flex-1 h-px sm:w-16 bg-gray-600"></div>
+                    <div className="flex-1 h-px sm:w-16 bg-gray-200"></div>
+                    <p className="px-3 text-sm text-white">Login with social accounts</p>
+                    <div className="flex-1 h-px sm:w-16 bg-gray-200"></div>
                 </motion.div>
 
                 {/* Google Login Button */}
                 <motion.div
                     onClick={handleGoogleSignIn}
-                    className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition-all duration-300"
+                    className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 rounded-md cursor-pointer transition-all duration-300 hover:animate-pulse"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.6 }}
                 >
                     <FcGoogle size={32} />
-                    <p>Continue with Google</p>
+                    <p className='text-white '>Continue with Google</p>
                 </motion.div>
 
                 {/* Sign Up Link */}
                 <motion.p
-                    className="px-6 text-sm text-center text-gray-800"
+                    className="px-6 text-sm text-center text-white"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.8 }}
@@ -263,14 +251,14 @@ const Login = () => {
                     Don&apos;t have an account yet?{' '}
                     <Link
                         to="/signup"
-                        className="hover:underline hover:text-rose-500 text-gray-800"
+                        className="hover:underline hover:text-rose-500 text-white"
                     >
                         Sign up
                     </Link>
                     <br />
                     <Link
                         to="/"
-                        className="hover:underline hover:text-pink-500 text-gray-800"
+                        className="hover:underline hover:text-pink-500 text-white"
                     >
                         Go Home
                     </Link>

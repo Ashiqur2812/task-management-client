@@ -23,12 +23,6 @@ const SignUp = () => {
 
         try {
             const result = await createUser(email, password);
-            // if (result?.user) {
-            //     userSetToDb({ displayName: name, photoURL, email });
-            // }
-
-            // await updateUserProfile(name, photoURL);
-
             // 🎉 Gorgeous Animated SweetAlert
             Swal.fire({
                 title: 'Welcome to Task management app!',
@@ -62,10 +56,6 @@ const SignUp = () => {
     const handleGoogleSignIn = async () => {
         try {
             const data = await googleAuth();
-            // if (data?.user) {
-            //     userSetToDb({ displayName: data.user?.displayName, photoURL: data.user?.photoURL, email: data.user?.email });
-            // }
-
             Swal.fire({
                 title: '🌍 Signed Up with Google!',
                 text: "Welcome to Task Management App!",
@@ -100,25 +90,25 @@ const SignUp = () => {
                 className="relative z-10 max-w-md p-4 md:px-20 bg-opacity-90 backdrop-blur-2xl shadow-2xl rounded-lg"
             >
                 <div className='text-center mb-6'>
-                    <h1 className='text-4xl font-extrabold text-white animate__animated animate__bounce pb-4'>
+                    <h1 className='text-4xl font-extrabold text-white animate__animated animate__bounce pt-8'>
                         Sign Up 🎊
                     </h1>
-                    <p className='text-sm text-white'>Create Your Account</p>
+                    <p className='text-lg text-white'>Create Your Account</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className='space-y-5'>
                     <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-                        <label className='block text-sm font-medium text-white'>Name</label>
+                        <label className=' text-sm font-medium text-white'>Name</label>
                         <input type='text' name='name' className='w-full p-3 border rounded-lg focus:outline-teal-500 bg-gray-200' />
                     </motion.div>
 
                     <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-                        <label className='block text-sm font-medium text-white'>Email</label>
+                        <label className=' text-sm font-medium text-white'>Email</label>
                         <input type='email' name='email' className='w-full p-3 border rounded-lg focus:outline-teal-500 bg-gray-200' />
                     </motion.div>
 
                     <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-                        <label className='block text-sm font-medium text-white'>Password</label>
+                        <label className='text-sm font-medium text-white'>Password</label>
                         <input type='password' name='password' className='w-full p-3 border rounded-lg focus:outline-teal-500 bg-gray-200' />
                     </motion.div>
 
@@ -136,22 +126,22 @@ const SignUp = () => {
                     <p className='text-sm text-white'>Or sign up with</p>
                     <motion.div
                         onClick={handleGoogleSignIn}
-                        className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition-all duration-300 "
+                        className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 rounded-md cursor-pointer transition-all duration-300 hover:animate-pulse"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 1.6 }}
                     >
                         <FcGoogle size={32} />
-                        <p className='text-white hover:text-black hover:font-semibold'>Continue with Google</p>
+                        <p className='text-white'>Continue with Google</p>
                     </motion.div>
                 </div>
 
-                <p className='mt-4 text-center text-sm text-white'>Already have an account?
+                <p className='mt-4 text-center text-sm text-white pb-4'>Already have an account?
                     <Link to='/login' className='hover:text-teal-600 hover:underline'>
                         Login
                     </Link>
                     <br />
-                    <Link to='/' className='hover:text-teal-600 hover:underline'>
+                    <Link to='/' className='hover:text-teal-600 hover:underline '>
                         Go Home
                     </Link>
                 </p>

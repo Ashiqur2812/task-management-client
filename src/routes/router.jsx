@@ -6,6 +6,7 @@ import Login from "../components/Login";
 import SignUp from "../components/SignUp";
 import Tasks from "../components/Tasks";
 import AddTask from "../components/AddTask";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
     {
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/tasks',
-                element: <Tasks />
+                element: <PrivateRoute><Tasks /></PrivateRoute>
             },
             {
                 path: 'add-tasks',

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
