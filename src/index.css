@@ -1,7 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+    --background-color: #ffffff !important;
+    --text-color: #000000 !important;
+    --primary-color: #3b82f6 !important;
+    --secondary-color: #f3f4f6 !important;
+}
+
+[data-theme='dark'] {
+    --background-color: #1a1a1a !important;
+    --text-color: #ffffff !important;
+    --primary-color: #60a5fa !important;
+    --secondary-color: #4b5563 !important;
+}
 
 body {
-    overflow-x: hidden !important;
+    background-color: var(--background-color) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s, color 0.3s !important;
+    overflow-x: hidden;
 }

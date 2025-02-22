@@ -8,8 +8,9 @@ import Swal from "sweetalert2";
 import Loader from "../shared/Loader";
 
 const Tasks = () => {
-    const [newTask, setNewTask] = useState({ title: "", description: "" });
+    const [newTask, setNewTask] = useState({ title: "", description: "", dueDate: "" });
     const [editTask, setEditTask] = useState(null);
+    const [activityLog, setActivityLog] = useState([]);
 
     const { data: tasks = { todo: [], inProgress: [], done: [] }, isLoading, refetch } = useQuery({
         queryKey: ["tasks"],
@@ -25,6 +26,7 @@ const Tasks = () => {
         },
         onSuccess: () => {
             refetch();
+            setActivityLog((prev) => [...prev, `Task "${newTask.title}" added.`]);
             Swal.fire({
                 icon: "success",
                 title: "Task Added!",
@@ -32,9 +34,18 @@ const Tasks = () => {
                 showConfirmButton: false,
                 timer: 4000,
             });
-            setNewTask({ title: "", description: "" });
+            setNewTask({ title: "", description: "", category: "todo", dueDate: "" });
+        },
+        onError: (error) => {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response?.data?.error || "Failed to add task",
+            });
         },
     });
+    
+
 
     const editTaskMutation = useMutation({
         mutationFn: async ({ id, updatedTask }) => {
@@ -42,6 +53,7 @@ const Tasks = () => {
         },
         onSuccess: () => {
             refetch();
+            setActivityLog((prev) => [...prev, `Task "${editTask.title}" updated.`]);
             setEditTask(null);
             Swal.fire({
                 icon: "success",
@@ -59,6 +71,7 @@ const Tasks = () => {
         },
         onSuccess: () => {
             refetch();
+            setActivityLog((prev) => [...prev, `Task deleted.`]);
             Swal.fire({
                 icon: "success",
                 title: "Task Deleted!",
@@ -103,24 +116,32 @@ const Tasks = () => {
     const onDragEnd = async (result) => {
         const { source, destination, draggableId } = result;
 
-        // If dropped outside the list
         if (!destination) return;
-
-        // If dropped in the same position
         if (source.droppableId === destination.droppableId && source.index === destination.index) return;
 
-        // Find the task being dragged
         const movedTask = tasks[source.droppableId][source.index];
 
-        // Update the task's category and position
         try {
             await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${movedTask._id}`, {
                 category: destination.droppableId,
             });
+            setActivityLog((prev) => [...prev, `Task "${movedTask.title}" moved to ${destination.droppableId}.`]);
             refetch();
         } catch (error) {
             console.error("Error updating task category:", error);
         }
+    };
+
+    const getTaskColor = (dueDate) => {
+        if (!dueDate) return "gray";
+        const now = new Date();
+        const due = new Date(dueDate);
+        const timeDiff = due - now;
+        const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+        if (hoursDiff < 0) return "red"; // Overdue
+        if (hoursDiff < 24) return "yellow"; // Due soon
+        return "green"; // On track
     };
 
     if (isLoading) return <Loader />;
@@ -149,6 +170,12 @@ const Tasks = () => {
                     className="px-4 py-2 text-black rounded-lg w-64"
                     maxLength={200}
                 />
+                <input
+                    type="date"
+                    value={newTask.dueDate}
+                    onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+                    className="px-4 py-2 text-black rounded-lg w-64"
+                />
                 <button
                     onClick={handleAddTask}
                     className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-700 flex items-center gap-2"
@@ -173,11 +200,12 @@ const Tasks = () => {
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
-                                                    className="bg-gray-700 p-3 rounded-lg shadow mb-2 flex justify-between items-center"
+                                                    className={`bg-gray-700 p-3 rounded-lg shadow mb-2 flex justify-between items-center border-l-4 border-${getTaskColor(task.dueDate)}-500`}
                                                 >
                                                     <div>
                                                         <p className="font-bold">{task.title}</p>
-                                                        <p className="font-bold text-gray-400">{task.description}</p>
+                                                        <p className="text-sm text-gray-400">{task.description}</p>
+                                                        <p className="text-sm text-gray-400">Due: {task.dueDate}</p>
                                                     </div>
                                                     <div className="flex gap-2">
                                                         <button onClick={() => setEditTask(task)} className="text-yellow-400 hover:text-yellow-600">
@@ -199,6 +227,16 @@ const Tasks = () => {
                 </div>
             </DragDropContext>
 
+            {/* Activity Log */}
+            <div className="mt-8 w-full max-w-5xl">
+                <h2 className="text-xl font-semibold text-sky-400 mb-4">Activity Log</h2>
+                <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    {activityLog.map((log, index) => (
+                        <p key={index} className="text-gray-400">{log}</p>
+                    ))}
+                </div>
+            </div>
+
             {/* Edit Task Modal */}
             {editTask && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -216,6 +254,12 @@ const Tasks = () => {
                             value={editTask.description}
                             onChange={(e) => setEditTask({ ...editTask, description: e.target.value })}
                             placeholder="Task Description"
+                            className="px-4 py-2 text-black rounded-lg w-full mb-4"
+                        />
+                        <input
+                            type="date"
+                            value={editTask.dueDate}
+                            onChange={(e) => setEditTask({ ...editTask, dueDate: e.target.value })}
                             className="px-4 py-2 text-black rounded-lg w-full mb-4"
                         />
                         <div className="flex gap-4">

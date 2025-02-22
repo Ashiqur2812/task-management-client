@@ -1,9 +1,9 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import logo from '../../src/assets/A professional logo.webp';
-import './Navbar.css'; 
+import './Navbar.css'; ;
+import ThemeToggle from './ThemeToggle';
 import { AuthContext } from '../provider/AuthProvider';
-// import ThemeToggle from '../pages/ThemeToggle';
 
 const Navbar = () => {
     const { user, signOutUser } = useContext(AuthContext);
@@ -12,7 +12,7 @@ const Navbar = () => {
     const links = <>
         <li><NavLink to='/' className="nav-link hover:scale-110 transition-transform duration-300">Home</NavLink></li>
         <li><NavLink to='/tasks' className="nav-link hover:scale-110 transition-transform duration-300">Tasks</NavLink></li>
-        <li><NavLink to='/add-tasks' className="nav-link hover:scale-110 transition-transform duration-300">Add Tasks</NavLink></li>
+        {/* <li><NavLink to='/add-tasks' className="nav-link hover:scale-110 transition-transform duration-300">Add Tasks</NavLink></li> */}
         <li><NavLink to='/profile' className="nav-link hover:scale-110 transition-transform duration-300">Profile</NavLink></li>
     </>;
 
@@ -56,7 +56,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end flex items-center gap-4">
-                    {/* <ThemeToggle/> */}
+                    <ThemeToggle/>
                     {
                         user && user?.email ? <>
                             <img referrerPolicy='no-referrer' className="h-8 md:h-10 w-8 md:w-10 rounded-full object-cover" src={user?.photoURL} alt="User" />

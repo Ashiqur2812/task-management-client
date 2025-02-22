@@ -21,10 +21,10 @@ export const router = createBrowserRouter([
                 path: '/tasks',
                 element: <PrivateRoute><Tasks /></PrivateRoute>
             },
-            {
-                path: 'add-tasks',
-                element: <AddTask />
-            }
+            // {
+            //     path: 'add-tasks',
+            //     element: <AddTask />
+            // }
         ]
     },
     {
