@@ -46,6 +46,34 @@ Socket.io 🔗 (Real-time updates)<br/>
 CORS & Morgan 📡 (Security & Logging)<br/>
 Dotenv 🔐 (Environment variables)<br/>
 
+📦 Dependencies<br/>
+🔹 Frontend Dependencies<br/>
+
+"dependencies": {<br/>
+  "@hello-pangea/dnd": "^18.0.1",<br/>
+  "@tanstack/react-query": "^5.66.8",<br/>
+  "axios": "^1.7.9",<br/>
+  "firebase": "^11.3.1",<br/>
+  "framer-motion": "^12.4.7",<br/>
+  "react": "^18.3.1",<br/>
+  "react-dom": "^18.3.1",<br/>
+  "react-icons": "^5.5.0",<br/>
+  "react-router-dom": "^7.2.0",<br/>
+  "socket.io-client": "^4.8.1",<br/>
+  "sweetalert2": "^11.17.2"<br/>
+}<br/>
+🔹 Backend Dependencies<br/>
+
+"dependencies": {<br/>
+  "cors": "^2.8.5",<br/>
+  "dotenv": "^16.4.7",<br/>
+  "express": "^4.21.2",<br/>
+  "mongodb": "^6.13.0",<br/>
+  "morgan": "^1.10.0",<br/>
+  "socket.io": "^4.8.1"<br/>
+}<br/>
+
+
 
 🛠️ Installation<br/>
 1️⃣ Clone the Repository<br/>
