@@ -84,11 +84,53 @@ Open http://localhost:5173/ in your browser! 🎉<br/>
 4️⃣ Tasks sync instantly with MongoDB using WebSockets.<br/>
 
 📝 API Endpoints<br/>
-Method	Endpoint	Description<br/>
-POST	/tasks	    Add a new task<br/>
-GET	    /tasks	    Retrieve all tasks<br/>
-PUT	    /tasks/:id	Update task details<br/>
-DELETE	/tasks/:id	Delete a task<br/>
+<table>
+    <tr>
+        <th>Method</th>
+        <th>Endpoint</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>GET</td>
+        <td>/api/tasks</td>
+        <td>Get all tasks</td>
+    </tr>
+    <tr>
+        <td>POST</td>
+        <td>/api/tasks</td>
+        <td>Create a new task</td>
+    </tr>
+    <tr>
+        <td>PUT</td>
+        <td>/api/tasks/:id</td>
+        <td>Update a task</td>
+    </tr>
+    <tr>
+        <td>DELETE</td>
+        <td>/api/tasks/:id</td>
+        <td>Delete a task</td>
+    </tr>
+    <tr>
+        <td>GET</td>
+        <td>/api/categories</td>
+        <td>Get all categories</td>
+    </tr>
+    <tr>
+        <td>POST</td>
+        <td>/api/categories</td>
+        <td>Create a new category</td>
+    </tr>
+    <tr>
+        <td>PUT</td>
+        <td>/api/categories/:id</td>
+        <td>Update a category</td>
+    </tr>
+    <tr>
+        <td>DELETE</td>
+        <td>/api/categories/:id</td>
+        <td>Delete a category</td>
+    </tr>
+</table>
 
 
 🐞 Troubleshooting<br/>
