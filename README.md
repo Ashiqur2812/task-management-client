@@ -110,26 +110,6 @@ Open http://localhost:5173/ in your browser! 🎉<br/>
         <td>/api/tasks/:id</td>
         <td>Delete a task</td>
     </tr>
-    <tr>
-        <td>GET</td>
-        <td>/api/categories</td>
-        <td>Get all categories</td>
-    </tr>
-    <tr>
-        <td>POST</td>
-        <td>/api/categories</td>
-        <td>Create a new category</td>
-    </tr>
-    <tr>
-        <td>PUT</td>
-        <td>/api/categories/:id</td>
-        <td>Update a category</td>
-    </tr>
-    <tr>
-        <td>DELETE</td>
-        <td>/api/categories/:id</td>
-        <td>Delete a category</td>
-    </tr>
 </table>
 
 
