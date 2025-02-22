@@ -4,9 +4,9 @@ import Home from "../Home/Home";
 import NotFound from "../NotFound/NotFound";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
-import Tasks from "../components/Tasks";
-import AddTask from "../components/AddTask";
+import Tasks from "../components/Tasks";;
 import PrivateRoute from "./PrivateRoute";
+import Profile from "../components/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -21,10 +21,10 @@ export const router = createBrowserRouter([
                 path: '/tasks',
                 element: <PrivateRoute><Tasks /></PrivateRoute>
             },
-            // {
-            //     path: 'add-tasks',
-            //     element: <AddTask />
-            // }
+            {
+                path: '/profile',
+                element: <PrivateRoute><Profile /></PrivateRoute>
+            }
         ]
     },
     {

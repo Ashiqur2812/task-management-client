@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -6,12 +6,16 @@ import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import Loader from "../shared/Loader";
+import io from "socket.io-client";
+
+const socket = io(import.meta.env.VITE_API_URL);
 
 const Tasks = () => {
     const [newTask, setNewTask] = useState({ title: "", description: "", dueDate: "" });
     const [editTask, setEditTask] = useState(null);
     const [activityLog, setActivityLog] = useState([]);
 
+    // Fetch tasks from the backend
     const { data: tasks = { todo: [], inProgress: [], done: [] }, isLoading, refetch } = useQuery({
         queryKey: ["tasks"],
         queryFn: async () => {
@@ -20,13 +24,28 @@ const Tasks = () => {
         },
     });
 
+    // Listen for real-time updates
+    useEffect(() => {
+        socket.on("task-updated", () => {
+            refetch();
+        });
+
+        socket.on("activity-log-updated", (log) => {
+            setActivityLog((prev) => [log, ...prev]);
+        });
+
+        return () => {
+            socket.off("task-updated");
+            socket.off("activity-log-updated");
+        };
+    }, [refetch]);
+
+    // Mutation for adding a task
     const addTaskMutation = useMutation({
         mutationFn: async (task) => {
             return axios.post(`${import.meta.env.VITE_API_URL}/tasks`, task);
         },
         onSuccess: () => {
-            refetch();
-            setActivityLog((prev) => [...prev, `Task "${newTask.title}" added.`]);
             Swal.fire({
                 icon: "success",
                 title: "Task Added!",
@@ -35,6 +54,7 @@ const Tasks = () => {
                 timer: 4000,
             });
             setNewTask({ title: "", description: "", category: "todo", dueDate: "" });
+            socket.emit("task-updated");
         },
         onError: (error) => {
             Swal.fire({
@@ -44,16 +64,13 @@ const Tasks = () => {
             });
         },
     });
-    
 
-
+    // Mutation for editing a task
     const editTaskMutation = useMutation({
         mutationFn: async ({ id, updatedTask }) => {
             return axios.put(`${import.meta.env.VITE_API_URL}/tasks/update/${id}`, updatedTask);
         },
         onSuccess: () => {
-            refetch();
-            setActivityLog((prev) => [...prev, `Task "${editTask.title}" updated.`]);
             setEditTask(null);
             Swal.fire({
                 icon: "success",
@@ -62,16 +79,16 @@ const Tasks = () => {
                 showConfirmButton: false,
                 timer: 4000,
             });
+            socket.emit("task-updated");
         },
     });
 
+    // Mutation for deleting a task
     const deleteTaskMutation = useMutation({
         mutationFn: async (taskId) => {
             return axios.delete(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`);
         },
         onSuccess: () => {
-            refetch();
-            setActivityLog((prev) => [...prev, `Task deleted.`]);
             Swal.fire({
                 icon: "success",
                 title: "Task Deleted!",
@@ -79,11 +96,20 @@ const Tasks = () => {
                 showConfirmButton: false,
                 timer: 2000,
             });
+            socket.emit("task-updated");
         },
     });
 
+    // Handle adding a new task
     const handleAddTask = () => {
-        if (!newTask.title.trim()) return;
+        if (!newTask.title.trim()) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Task title is required.",
+            });
+            return;
+        }
         addTaskMutation.mutate({
             ...newTask,
             timestamp: new Date().toISOString(),
@@ -91,11 +117,20 @@ const Tasks = () => {
         });
     };
 
+    // Handle editing a task
     const handleEditTask = () => {
-        if (!editTask.title.trim()) return;
+        if (!editTask.title.trim()) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Task title is required.",
+            });
+            return;
+        }
         editTaskMutation.mutate({ id: editTask._id, updatedTask: editTask });
     };
 
+    // Handle deleting a task
     const handleDeleteTask = async (taskId) => {
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -113,6 +148,7 @@ const Tasks = () => {
         }
     };
 
+    // Handle drag-and-drop
     const onDragEnd = async (result) => {
         const { source, destination, draggableId } = result;
 
@@ -125,13 +161,13 @@ const Tasks = () => {
             await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${movedTask._id}`, {
                 category: destination.droppableId,
             });
-            setActivityLog((prev) => [...prev, `Task "${movedTask.title}" moved to ${destination.droppableId}.`]);
-            refetch();
+            socket.emit("task-updated");
         } catch (error) {
             console.error("Error updating task category:", error);
         }
     };
 
+    // Get task color based on due date
     const getTaskColor = (dueDate) => {
         if (!dueDate) return "gray";
         const now = new Date();
@@ -147,19 +183,19 @@ const Tasks = () => {
     if (isLoading) return <Loader />;
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center pt-16 pb-20">
-            <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-bold text-sky-400">
+        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center pt-16 pb-20 px-4">
+            <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-bold text-sky-400 text-center">
                 Task Management System
             </motion.h1>
 
             {/* Add Task Form */}
-            <div className="flex items-center gap-4 my-8">
+            <div className="flex flex-col md:flex-row items-center gap-4 my-8 w-full max-w-4xl">
                 <input
                     type="text"
                     value={newTask.title}
                     onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                     placeholder="Task Title (max 50 chars)"
-                    className="px-4 py-2 text-black rounded-lg w-64"
+                    className="px-4 py-2 text-black rounded-lg w-full md:w-64"
                     maxLength={50}
                 />
                 <input
@@ -167,18 +203,18 @@ const Tasks = () => {
                     value={newTask.description}
                     onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                     placeholder="Task Description (max 200 chars)"
-                    className="px-4 py-2 text-black rounded-lg w-64"
+                    className="px-4 py-2 text-black rounded-lg w-full md:w-64"
                     maxLength={200}
                 />
                 <input
                     type="date"
                     value={newTask.dueDate}
                     onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-                    className="px-4 py-2 text-black rounded-lg w-64"
+                    className="px-4 py-2 text-black rounded-lg w-full md:w-64"
                 />
                 <button
                     onClick={handleAddTask}
-                    className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-700 flex items-center gap-2"
+                    className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-700 flex items-center gap-2 w-full md:w-auto"
                     disabled={!newTask.title.trim()}
                 >
                     <FaPlus /> Add
@@ -187,7 +223,7 @@ const Tasks = () => {
 
             {/* Drag-and-Drop Task Boards */}
             <DragDropContext onDragEnd={onDragEnd}>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">
                     {["todo", "inProgress", "done"].map((category) => (
                         <Droppable key={category} droppableId={category}>
                             {(provided) => (
@@ -228,19 +264,19 @@ const Tasks = () => {
             </DragDropContext>
 
             {/* Activity Log */}
-            <div className="mt-8 w-full max-w-5xl">
+            <div className="mt-8 w-full max-w-5xl px-4">
                 <h2 className="text-xl font-semibold text-sky-400 mb-4">Activity Log</h2>
                 <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
                     {activityLog.map((log, index) => (
-                        <p key={index} className="text-gray-400">{log}</p>
+                        <p key={index} className="text-gray-400">{log.message} - <span className="text-gray-500">{new Date(log.timestamp).toLocaleString()}</span></p>
                     ))}
                 </div>
             </div>
 
             {/* Edit Task Modal */}
             {editTask && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
                         <h2 className="text-xl font-bold text-sky-400 mb-4">Edit Task</h2>
                         <input
                             type="text"

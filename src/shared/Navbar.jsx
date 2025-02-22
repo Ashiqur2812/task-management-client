@@ -12,7 +12,6 @@ const Navbar = () => {
     const links = <>
         <li><NavLink to='/' className="nav-link hover:scale-110 transition-transform duration-300">Home</NavLink></li>
         <li><NavLink to='/tasks' className="nav-link hover:scale-110 transition-transform duration-300">Tasks</NavLink></li>
-        {/* <li><NavLink to='/add-tasks' className="nav-link hover:scale-110 transition-transform duration-300">Add Tasks</NavLink></li> */}
         <li><NavLink to='/profile' className="nav-link hover:scale-110 transition-transform duration-300">Profile</NavLink></li>
     </>;
 
@@ -46,7 +45,7 @@ const Navbar = () => {
                             <img className='w-8 lg:w-16 h-8 lg:h-16 object-cover rounded-xl hover:rotate-360 transition-transform duration-1000 invisible md:visible lg:invisible xl:visible' src={logo} alt="Logo" />
                         </div>
                         <div>
-                            <Link to='/' className="btn btn-ghost text-2xl md:text-3xl hover:text-rose-500 ">TaskMaster</Link>
+                            <Link to='/' className="btn btn-ghost text-lg md:text-3xl hover:text-rose-500 ">TaskMaster</Link>
                         </div>
                     </div>
                 </div>
@@ -56,7 +55,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end flex items-center gap-4">
-                    <ThemeToggle/>
+                    {/* <ThemeToggle/> */}
                     {
                         user && user?.email ? <>
                             <img referrerPolicy='no-referrer' className="h-8 md:h-10 w-8 md:w-10 rounded-full object-cover" src={user?.photoURL} alt="User" />

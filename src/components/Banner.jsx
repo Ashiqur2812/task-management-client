@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const handleSignUp = () => {
         navigate("/signup");
-    }
+    };
 
     return (
-        <section className="relative h-[400px] sm:h-[500px] lg:h-[585px] bg-gradient-to-r from-teal-600 to-sky-400 overflow-hidden">
+        <section className="relative h-[400px] sm:h-[500px] lg:h-[600px] bg-gradient-to-r from-teal-700 to-sky-500 overflow-hidden">
             {/* Background Animation */}
             <motion.div
                 className="absolute inset-0 bg-[url('/src/assets/plant-5.svg')] bg-cover opacity-20"
@@ -23,7 +23,7 @@ const Banner = () => {
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
                 {/* Heading */}
                 <motion.h1
-                    className="text-4xl sm:text-5xl md:text-6xl font-bold text-base-100 mb-4"
+                    className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4"
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
@@ -33,7 +33,7 @@ const Banner = () => {
 
                 {/* Subtitle */}
                 <motion.p
-                    className="text-lg sm:text-xl text-base-200 mb-8 max-w-2xl mx-auto"
+                    className="text-lg sm:text-xl text-gray-100 mb-8 max-w-2xl mx-auto"
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
@@ -44,7 +44,7 @@ const Banner = () => {
                 {/* Call to Action Button */}
                 <motion.button
                     onClick={handleSignUp}
-                    className="bg-white text-teal-600 px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300"
+                    className="bg-white text-teal-700 px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0 }}
@@ -68,6 +68,26 @@ const Banner = () => {
                 animate={{ scale: 1 }}
                 transition={{ duration: 1, delay: 1 }}
             ></motion.div>
+
+            {/* Floating Particles */}
+            {[...Array(10)].map((_, index) => (
+                <motion.div
+                    key={index}
+                    className="absolute w-4 h-4 bg-white/20 rounded-full"
+                    style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                        duration: 2,
+                        delay: Math.random() * 2,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                    }}
+                ></motion.div>
+            ))}
         </section>
     );
 };
