@@ -46,6 +46,8 @@ const Tasks = () => {
             return axios.post(`${import.meta.env.VITE_API_URL}/tasks`, task);
         },
         onSuccess: () => {
+            refetch();
+            setActivityLog((prev) => [...prev, `Task "${newTask.title}" added.`]);
             Swal.fire({
                 icon: "success",
                 title: "Task Added!",
@@ -54,7 +56,6 @@ const Tasks = () => {
                 timer: 4000,
             });
             setNewTask({ title: "", description: "", category: "todo", dueDate: "" });
-            socket.emit("task-updated");
         },
         onError: (error) => {
             Swal.fire({
@@ -71,6 +72,8 @@ const Tasks = () => {
             return axios.put(`${import.meta.env.VITE_API_URL}/tasks/update/${id}`, updatedTask);
         },
         onSuccess: () => {
+            refetch();
+            setActivityLog((prev) => [...prev, `Task "${editTask.title}" updated.`]);
             setEditTask(null);
             Swal.fire({
                 icon: "success",
@@ -79,7 +82,6 @@ const Tasks = () => {
                 showConfirmButton: false,
                 timer: 4000,
             });
-            socket.emit("task-updated");
         },
     });
 
@@ -89,6 +91,8 @@ const Tasks = () => {
             return axios.delete(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`);
         },
         onSuccess: () => {
+            refetch();
+            setActivityLog((prev) => [...prev, "Task deleted."]);
             Swal.fire({
                 icon: "success",
                 title: "Task Deleted!",
@@ -96,20 +100,12 @@ const Tasks = () => {
                 showConfirmButton: false,
                 timer: 2000,
             });
-            socket.emit("task-updated");
         },
     });
 
     // Handle adding a new task
     const handleAddTask = () => {
-        if (!newTask.title.trim()) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Task title is required.",
-            });
-            return;
-        }
+        if (!newTask.title.trim()) return;
         addTaskMutation.mutate({
             ...newTask,
             timestamp: new Date().toISOString(),
@@ -119,14 +115,7 @@ const Tasks = () => {
 
     // Handle editing a task
     const handleEditTask = () => {
-        if (!editTask.title.trim()) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Task title is required.",
-            });
-            return;
-        }
+        if (!editTask.title.trim()) return;
         editTaskMutation.mutate({ id: editTask._id, updatedTask: editTask });
     };
 
@@ -161,7 +150,8 @@ const Tasks = () => {
             await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${movedTask._id}`, {
                 category: destination.droppableId,
             });
-            socket.emit("task-updated");
+            setActivityLog((prev) => [...prev, `Task "${movedTask.title}" moved to ${destination.droppableId}.`]);
+            refetch();
         } catch (error) {
             console.error("Error updating task category:", error);
         }
@@ -268,7 +258,7 @@ const Tasks = () => {
                 <h2 className="text-xl font-semibold text-sky-400 mb-4">Activity Log</h2>
                 <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
                     {activityLog.map((log, index) => (
-                        <p key={index} className="text-gray-400">{log.message} - <span className="text-gray-500">{new Date(log.timestamp).toLocaleString()}</span></p>
+                        <p key={index} className="text-gray-400">{log}</p>
                     ))}
                 </div>
             </div>
@@ -319,4 +309,4 @@ const Tasks = () => {
     );
 };
 
-export default Tasks;
+export default Tasks; 
