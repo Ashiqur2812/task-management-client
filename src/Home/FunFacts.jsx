@@ -27,7 +27,7 @@ const FunFacts = () => {
     ];
 
     return (
-        <section className="py-16 bg-gradient-to-br from-sky-100 to-teal-100 lg:py-40">
+        <section className="py-16 bg-gradient-to-br from-sky-100 to-teal-100 lg:py-40 lg:px-2">
             <div className="container mx-auto px-4 lg:mx-4">
                 {/* Section Heading */}
                 <motion.h2

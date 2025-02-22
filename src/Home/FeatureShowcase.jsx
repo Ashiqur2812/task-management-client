@@ -27,7 +27,7 @@ const FeatureShowcase = () => {
     ];
 
     return (
-        <section className="py-16 bg-gradient-to-r from-teal-100 to-sky-100 lg:py-28">
+        <section className="py-16 bg-gradient-to-r from-teal-100 to-sky-100 lg:py-28 lg:px-5">
             <div className="container mx-auto px-4">
                 {/* Section Heading */}
                 <motion.h2

@@ -105,7 +105,14 @@ const Tasks = () => {
 
     // Handle adding a new task
     const handleAddTask = () => {
-        if (!newTask.title.trim()) return;
+        if (!newTask.title.trim()) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Task title is required.",
+            });
+            return;
+        }
         addTaskMutation.mutate({
             ...newTask,
             timestamp: new Date().toISOString(),
@@ -115,7 +122,14 @@ const Tasks = () => {
 
     // Handle editing a task
     const handleEditTask = () => {
-        if (!editTask.title.trim()) return;
+        if (!editTask.title.trim()) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Task title is required.",
+            });
+            return;
+        }
         editTaskMutation.mutate({ id: editTask._id, updatedTask: editTask });
     };
 
