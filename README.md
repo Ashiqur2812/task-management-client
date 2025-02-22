@@ -5,15 +5,15 @@ A powerful, real-time Task Management Application with a drag-and-drop interface
 📌 Live Demo: 🔗 Click Here ```https://task-management-client-767h.vercel.app```
 📌 Backend API: 🔗 Click Here ```https://task-management-server-wheat-gamma.vercel.app```
 
-📜 Table of Contents
-✨ Features
-⚙️ Technologies Used
-📦 Dependencies
-🛠️ Installation
-🚀 Usage
-📝 API Endpoints
-🐞 Troubleshooting
-👨‍💻 Contributors
+📜 Table of Contents <br/>
+✨ Features<br/>
+⚙️ Technologies Used<br/>
+📦 Dependencies<br/>
+🛠️ Installation<br/>
+🚀 Usage<br/>
+📝 API Endpoints<br/>
+🐞 Troubleshooting<br/>
+👨‍💻 Contributors<br/>
 📄 License
 
 
