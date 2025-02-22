@@ -8,7 +8,6 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [theme, setTheme] = useState('light'); 
     const googleProvider = new GoogleAuthProvider();
 
     // Create User with Email & Password
@@ -36,25 +35,7 @@ const AuthProvider = ({ children }) => {
         return await signInWithPopup(auth, googleProvider);
     };
 
-    // Toggle between dark and light mode
-    const toggleTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-    };
-
-    // Detect system preference for dark/light mode
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        setTheme(savedTheme);
-    }, []);
-
-    // Apply theme to the document
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
-
-    // Track Authentication State (Corrected useEffect)
+    // Track Authentication State 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             console.log('Current User-->', currentUser?.email);
@@ -73,8 +54,6 @@ const AuthProvider = ({ children }) => {
         signOutUser,
         loading,
         googleAuth,
-        toggleTheme,
-        theme
     };
 
     return (

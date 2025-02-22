@@ -2,7 +2,6 @@ import { Link, NavLink } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import logo from '../../src/assets/A professional logo.webp';
 import './Navbar.css'; ;
-import ThemeToggle from './ThemeToggle';
 import { AuthContext } from '../provider/AuthProvider';
 
 const Navbar = () => {
@@ -55,7 +54,6 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end flex items-center gap-4">
-                    {/* <ThemeToggle/> */}
                     {
                         user && user?.email ? <>
                             <img referrerPolicy='no-referrer' className="h-8 md:h-10 w-8 md:w-10 rounded-full object-cover" src={user?.photoURL} alt="User" />
