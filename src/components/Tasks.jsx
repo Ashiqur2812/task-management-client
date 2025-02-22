@@ -14,6 +14,7 @@ const Tasks = () => {
     const [newTask, setNewTask] = useState({ title: "", description: "", dueDate: "" });
     const [editTask, setEditTask] = useState(null);
     const [activityLog, setActivityLog] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("all"); // Category filter
 
     // Fetch tasks from the backend
     const { data: tasks = { todo: [], inProgress: [], done: [] }, isLoading, refetch } = useQuery({
@@ -225,10 +226,24 @@ const Tasks = () => {
                 </button>
             </div>
 
+            {/* Category Filter */}
+            <div className="mb-6">
+                <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="p-2 rounded bg-gray-800 text-white"
+                >
+                    <option value="all">All</option>
+                    <option value="todo">To-Do</option>
+                    <option value="inProgress">In Progress</option>
+                    <option value="done">Done</option>
+                </select>
+            </div>
+
             {/* Drag-and-Drop Task Boards */}
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">
-                    {["todo", "inProgress", "done"].map((category) => (
+                    {["todo", "inProgress", "done"].filter((category) => selectedCategory === "all" || selectedCategory === category).map((category) => (
                         <Droppable key={category} droppableId={category}>
                             {(provided) => (
                                 <div {...provided.droppableProps} ref={provided.innerRef} className="bg-gray-800 p-4 rounded-lg shadow-lg">
