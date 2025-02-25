@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
+import { useSpring, animated } from "@react-spring/web";
 
 const FunFacts = () => {
     const facts = [
@@ -41,50 +41,57 @@ const FunFacts = () => {
 
                 {/* Fun Fact Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {facts.map((fact, index) => (
-                        <motion.div
-                            key={index}
-                            className="bg-white p-8 rounded-xl shadow-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex flex-col items-center"
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: index * 0.2 }}
-                            whileHover={{ rotate: [0, 2, -2, 2, 0], transition: { duration: 0.4 } }}
-                        >
-                            {/* Animated Icon with Glow */}
+                    {facts.map((fact, index) => {
+                        // Animated number using react-spring
+                        const { number } = useSpring({
+                            from: { number: 0 },
+                            to: { number: fact.number },
+                            config: { duration: 4000 },
+                        });
+
+                        return (
                             <motion.div
-                                className="text-6xl mb-4"
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                                key={index}
+                                className="bg-white p-8 rounded-xl shadow-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex flex-col items-center"
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: index * 0.2 }}
+                                whileHover={{ rotate: [0, 2, -2, 2, 0], transition: { duration: 0.4 } }}
                             >
-                                {fact.icon}
+                                {/* Animated Icon with Glow */}
+                                <motion.div
+                                    className="text-6xl mb-4"
+                                    animate={{ scale: [1, 1.2, 1] }}
+                                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                                >
+                                    {fact.icon}
+                                </motion.div>
+
+                                {/* Animated Counter using react-spring */}
+                                <motion.div
+                                    className="text-5xl font-extrabold text-teal-600 drop-shadow-md"
+                                    initial={{ scale: 0.9 }}
+                                    whileInView={{ scale: 1 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    <animated.span>
+                                        {number.to((n) => Math.floor(n))}
+                                    </animated.span>
+                                    {fact.label === "Satisfaction Rate" && <span>%</span>}
+                                </motion.div>
+
+                                {/* Label with a Fun Animation */}
+                                <motion.p
+                                    className="text-gray-700 mt-4 text-lg font-medium"
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.5 }}
+                                >
+                                    {fact.label}
+                                </motion.p>
                             </motion.div>
-
-                            {/* Animated Counter */}
-                            <CountUp start={0} end={fact.number} duration={5}>
-                                {({ countUpRef }) => (
-                                    <motion.div
-                                        className="text-5xl font-extrabold text-teal-600 drop-shadow-md"
-                                        initial={{ scale: 0.9 }}
-                                        whileInView={{ scale: 1 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <span ref={countUpRef} />
-                                        {fact.label === "Satisfaction Rate" && <span>%</span>}
-                                    </motion.div>
-                                )}
-                            </CountUp>
-
-                            {/* Label with a Fun Animation */}
-                            <motion.p
-                                className="text-gray-700 mt-4 text-lg font-medium"
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                transition={{ duration: 0.8, delay: 0.5 }}
-                            >
-                                {fact.label}
-                            </motion.p>
-                        </motion.div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </section>

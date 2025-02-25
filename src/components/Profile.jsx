@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
-import { FaUserCircle, FaEnvelope, FaClock, FaUser, FaSun, FaMoon } from "react-icons/fa";
+import { FaUserCircle, FaEnvelope, FaClock, FaUser } from "react-icons/fa";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Profile = () => {
@@ -8,7 +8,6 @@ const Profile = () => {
     const [loginTime, setLoginTime] = useState("");
     const [bio, setBio] = useState(localStorage.getItem("bio") || "Write something about yourself...");
     const [isEditing, setIsEditing] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
         let storedLoginTime = localStorage.getItem("loginTime");
@@ -32,24 +31,14 @@ const Profile = () => {
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`min-h-screen flex items-center justify-center ${darkMode ? "bg-gray-900 text-white" : "bg-gradient-to-r from-blue-900 to-gray-900"
-                } relative overflow-hidden`}
+            className={`min-h-[600px] flex items-center justify-center bg-gray-900 text-white relative overflow-hidden`}
         >
-            {/* Dark Mode Toggle */}
-            <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="absolute top-5 right-5 p-2 bg-white bg-opacity-20 rounded-full shadow-lg hover:bg-opacity-40 transition"
-            >
-                {darkMode ? <FaSun className="text-yellow-400 text-xl" /> : <FaMoon className="text-gray-400 text-xl" />}
-            </button>
-
             {/* Profile Card */}
             <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className={`relative ${darkMode ? "bg-gray-800" : "bg-white bg-opacity-10"
-                    } backdrop-blur-md shadow-lg rounded-xl p-8 w-full max-w-md mx-4`}
+                className={`relative bg-white/5 bg-opacity-10 backdrop-blur-md shadow-lg rounded-xl p-8 w-full max-w-md mx-4`}
             >
                 {/* Profile Photo */}
                 <motion.div
