@@ -14,8 +14,8 @@ const Login = () => {
     const location = useLocation();
     const from = location?.state?.from?.pathname || '/';
 
-    if (user) return <Navigate to={from} replace={true} />;
     if (loading) return <Loader />;
+    if (user) return <Navigate to={from} replace={true} />;
 
     // Form submit handler
     const handleSubmit = async (e) => {
