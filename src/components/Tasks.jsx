@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import Loader from "../shared/Loader";
 import io from "socket.io-client";
 
-const socket = io("import.meta.env.VITE_API_URL", { transports: ["websocket", "polling"] });
+const socket = io(import.meta.env.VITE_API_URL, { transports: ["websocket", "polling"] });
 
 const Tasks = () => {
     const [newTask, setNewTask] = useState({ title: "", description: "", dueDate: "" });
