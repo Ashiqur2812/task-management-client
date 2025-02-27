@@ -31,7 +31,7 @@ const Login = () => {
             await signInUser(email, password);
             Swal.fire({
                 title: 'Welcome Back! 🎉',
-                text: 'Login Successful! Ready to find your dream home? 🏡',
+                text: 'Login Successful!',
                 icon: 'success',
                 imageUrl: 'https://media.giphy.com/media/3o7abAHdYvZdBNnGZq/giphy.gif', // Add a fun GIF
                 imageWidth: 200,
